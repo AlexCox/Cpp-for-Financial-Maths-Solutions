@@ -1,2 +1,10 @@
 
 .vscode/settings.json
+FMLib/FMLib/Debug
+FMLib/.vs/
+
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.pdb
