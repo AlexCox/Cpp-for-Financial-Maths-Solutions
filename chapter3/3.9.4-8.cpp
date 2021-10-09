@@ -75,7 +75,7 @@ double normcdf(double x) {
 
 double normcdfHorner(double x) {
     if (x < 0) {
-        return 1.0 - normcdf(-x);
+        return 1.0 - normcdfHorner(-x);
     }
 
     double k = 1 / (1 + 0.2316419 * x);
