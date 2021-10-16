@@ -16,6 +16,11 @@ double circleCircumference(int r) {
 	return answer;
 }
 
+void polarToCartesian(double r, double theta, double& x, double& y) {
+	x = r * cos(theta);
+	y = r * sin(theta);
+}
+
 /*
 	TESTS
 */
@@ -28,7 +33,17 @@ static void testCircleCircumference() {
 	ASSERT_APPROX_EQUAL(circleCircumference(3), 18.84956, 0.01);
 }
 
+static void testPolarToCartesian() {
+	double r = 2.0;
+	double theta = PI / 2;
+	double x = 0.0, y = 0.0;
+	polarToCartesian(r, theta, x, y);
+	ASSERT_APPROX_EQUAL(x, 0.0, 0.001);
+	ASSERT_APPROX_EQUAL(y, 2.0, 0.001);
+}
+
 void testGeometry() {
 	TEST(testCircleArea);
 	TEST(testCircleCircumference);
+	TEST(testPolarToCartesian);
 }
