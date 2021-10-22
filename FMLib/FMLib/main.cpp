@@ -3,6 +3,8 @@
 #include "geometry.h"
 #include "testing.h"
 #include "charts.h"
+#include "CallOption.h"
+#include "Polynomial.h"
 using namespace std;
 
 int main() {
@@ -10,6 +12,8 @@ int main() {
 	testMatlib();
 	testGeometry();
 	testCharts();
+	testCallOption();
+	testPolynomial();
 	//setDebugEnabled(false);
 	return 0;
 }
