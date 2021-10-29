@@ -1,5 +1,7 @@
 #pragma once
 
+#include "stdafx.h"
+
 /*
 	Computes the cumulative distribution function of the normal distribution
 */
@@ -16,6 +18,18 @@ double norminv(double x);
 double blackScholesCallPrice(double K, double T, double S, double sigma, double r);
 
 double blackScholesPutPrice(double K, double T, double S, double sigma, double r);
+
+std::vector<double> linspace(double from, double to, int numPoints);
+double sum(const std::vector<double>& v);
+double mean(const std::vector<double>& values);
+double standardDeviation(const std::vector<double>& values, bool populationStdDev = false);
+double min(const std::vector<double>& values);
+double max(const std::vector<double>& values);
+void rng(const std::string& setting);
+std::vector<double> randuniform(int n);
+std::vector<double> randn(int n);
+std::vector<double> sort(const std::vector<double>& v);
+double prctile(const std::vector<double>& v, double percentage);
 
 /*
 	Testing normcdf and norminv functions

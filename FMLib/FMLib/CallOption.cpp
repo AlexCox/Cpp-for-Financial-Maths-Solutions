@@ -1,5 +1,5 @@
 #include "CallOption.h"
-#include "matlib.h""
+#include "matlib.h"
 
 CallOption::CallOption() :
 	strike(0.0), maturity(0.0) {

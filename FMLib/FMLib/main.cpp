@@ -5,6 +5,7 @@
 #include "charts.h"
 #include "PieChart.h"
 #include "LineChart.h"
+#include "Histogram.h"
 #include "CallOption.h"
 #include "Polynomial.h"
 using namespace std;
@@ -16,6 +17,7 @@ int main() {
 	testCharts();
 	testPieChart();
 	testLineChart();
+	testHistogram();
 	testCallOption();
 	testPolynomial();
 	//setDebugEnabled(false);

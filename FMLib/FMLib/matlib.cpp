@@ -111,6 +111,133 @@ double blackScholesPutPrice(double K, double T, double S, double sigma, double r
 	return P;
 }
 
+std::vector<double> linspace(double from, double to, int numPoints) {
+	ASSERT(numPoints >= 2);
+	std::vector<double> ret(numPoints, 0.0);
+	double step = (to - from) / (numPoints - 1);
+	double current = from;
+	for (int i = 0; i < numPoints; i++) {
+		ret[i] = current;
+		current += step;
+	}
+	return ret;
+}
+
+double sum(const std::vector<double>& v) {
+	double total = 0.0;
+	int n = v.size();
+	for (int i = 0; i < n; i++) {
+		total += v[i];
+	}
+	return total;
+}
+
+double mean(const std::vector<double>& values) {
+	size_t N = values.size();
+	double total = sum(values);
+	return total / N;
+}
+
+double standardDeviation(const std::vector<double>& values, bool populationStdDev) {
+	double total = 0.0;
+	size_t N = values.size();
+	double mu = mean(values);
+	for (int i = 0; i < N; i++) {
+		total += pow(values[i] - mu, 2);
+	}
+	if (populationStdDev) {
+		return sqrt(total / N);
+	}
+	else {
+		return sqrt(total / (N - 1));
+	}
+
+}
+
+double min(const std::vector<double>& values) {
+	size_t N = values.size();
+	double minimum = values[0];
+	for (int i = 1; i < N; i++) {
+		if (values[i] < minimum) {
+			minimum = values[i];
+		}
+	}
+	return minimum;
+}
+
+double max(const std::vector<double>& values) {
+	size_t N = values.size();
+	double maximum = values[0];
+	for (int i = 1; i < N; i++) {
+		if (values[i] > maximum) {
+			maximum = values[i];
+		}
+	}
+	return maximum;
+}
+
+
+static std::mt19937 mersenneTwister;
+
+void rng(const std::string& description) {
+	ASSERT(description == "default");
+	mersenneTwister.seed(std::mt19937::default_seed);
+}
+
+std::vector<double> randuniform(int n) {
+	std::vector<double> ret(n, 0.0);
+	for (int i = 0; i < n; i++) {
+		ret[i] = (mersenneTwister() + 0.5) /
+			(mersenneTwister.max() + 1.0);
+	}
+	return ret;
+}
+
+/*  Create normally distributed random numbers */
+std::vector<double> randn(int n) {
+	std::vector<double> v = randuniform(n);
+	for (int i = 0; i < n; i++) {
+		v[i] = norminv(v[i]);
+	}
+	return v;
+}
+
+std::vector<double> sort(const std::vector<double>& v) {
+	std::vector<double> copy(v);
+	std::sort(copy.begin(), copy.end());
+	return copy;
+}
+
+/**
+ *  Find the given percentile of a distribution
+ */
+double prctile(const std::vector<double>& v, double percentage) {
+	ASSERT(percentage >= 0.0);
+	ASSERT(percentage <= 100.0);
+	int n = v.size();
+	std::vector<double> sorted = sort(v);
+
+	int indexBelow = (int)(n * percentage / 100.0 - 0.5);
+	int indexAbove = indexBelow + 1;
+	if (indexAbove > n - 1) {
+		return sorted[n - 1];
+	} if (indexBelow < 0) {
+		return sorted[0];
+	}
+	double valueBelow = sorted[indexBelow];
+	double valueAbove = sorted[indexAbove];
+	double percentageBelow = 100.0 * (indexBelow + 0.5) / n;
+	double percentageAbove = 100.0 * (indexAbove + 0.5) / n;
+	if (percentage <= percentageBelow) {
+		return valueBelow;
+	}
+	if (percentage >= percentageAbove) {
+		return valueAbove;
+	}
+	double correction = (percentage - percentageBelow) * (valueAbove - valueBelow) / (percentageAbove - percentageBelow);
+	return valueBelow + correction;
+}
+
 /*
 	TESTS
 */
