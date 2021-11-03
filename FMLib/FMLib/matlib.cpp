@@ -238,6 +238,18 @@ double prctile(const std::vector<double>& v, double percentage) {
 	return valueBelow + correction;
 }
 
+double integral(RealFunction& f, double a, double b, int steps) {
+	double h = (b - a) / steps;
+	double x = a + 0.5 * h;
+	double total = 0.0;
+	for (int i = 0; i < steps; i++) {
+		double y = f.evaluate(x);
+		total += y;
+		x += h;
+	}
+	return h * total;
+}
+
 /*
 	TESTS
 */

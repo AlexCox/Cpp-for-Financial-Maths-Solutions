@@ -1,13 +1,9 @@
 #include "CallOption.h"
 #include "matlib.h"
 
-CallOption::CallOption() :
-	strike(0.0), maturity(0.0) {
-}
-
 double CallOption::payoff(double stockAtMaturity) const {
-	if (stockAtMaturity > strike) {
-		return stockAtMaturity - strike;
+	if (stockAtMaturity > getStrike()) {
+		return stockAtMaturity - getStrike();
 	}
 	else {
 		return 0.0;
@@ -15,12 +11,12 @@ double CallOption::payoff(double stockAtMaturity) const {
 }
 
 double CallOption::price(
-	const BlackScholesModel& bsm) const {
-	double S = bsm.stockPrice;
-	double K = strike;
-	double sigma = bsm.volatility;
-	double r = bsm.riskFreeRate;
-	double T = maturity - bsm.date;
+	const BlackScholesModel& model) const {
+	double S = model.stockPrice;
+	double K = getStrike();
+	double sigma = model.volatility;
+	double r = model.riskFreeRate;
+	double T = getMaturity() - model.date;
 
 	double denominator = sigma * sqrt(T);
 	double d1 = (log(S / K) + (r + 0.5 * sigma * sigma) * T) / denominator;
@@ -30,16 +26,16 @@ double CallOption::price(
 
 static void testCallOptionPrice() {
 	CallOption callOption;
-	callOption.strike = 105.0;
-	callOption.maturity = 2.0;
+	callOption.setStrike(105.0);
+	callOption.setMaturity(2.0);
 
-	BlackScholesModel bsm;
-	bsm.date = 1.0;
-	bsm.volatility = 0.1;
-	bsm.riskFreeRate = 0.05;
-	bsm.stockPrice = 100.0;
+	BlackScholesModel m;
+	m.date = 1.0;
+	m.volatility = 0.1;
+	m.riskFreeRate = 0.05;
+	m.stockPrice = 100.0;
 
-	double price = callOption.price(bsm);
+	double price = callOption.price(m);
 	ASSERT_APPROX_EQUAL(price, 4.046, 0.01);
 }
 

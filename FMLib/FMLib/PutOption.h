@@ -2,16 +2,16 @@
 
 #include "stdafx.h"
 #include "BlackScholesModel.h"
+#include "ContinuousTimeOptionBase.h"
 
-class PutOption {
+class PutOption : public ContinuousTimeOptionBase {
 public:
-	PutOption();
+	double payoff(const std::vector<double>& stockprices) const;
+	double price(const BlackScholesModel& model) const;
 
-	double strike;
-	double maturity;
-
-	double payoff(double stockAtMaturity) const;
-	double price(const BlackScholesModel& bsm) const;
+	bool isPathDependent() const {
+		return false;
+	}
 };
 
 void testPutOption();

@@ -8,6 +8,9 @@
 #include "Histogram.h"
 #include "CallOption.h"
 #include "Polynomial.h"
+#include "MonteCarloPricer.h"
+#include "UpAndOutOption.h"
+#include "DownAndOutOption.h"
 using namespace std;
 
 int main() {
@@ -20,6 +23,9 @@ int main() {
 	testHistogram();
 	testCallOption();
 	testPolynomial();
+	testMonteCarloPricer();
+	testUpAndOutOption();
+	testDownAndOutOption();
 	//setDebugEnabled(false);
 	return 0;
 }

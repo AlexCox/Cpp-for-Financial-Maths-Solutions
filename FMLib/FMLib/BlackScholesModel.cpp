@@ -77,5 +77,5 @@ void testRiskNeutralPricePath() {
 			maturity, nSteps);
 		finalPrices[i] = path.back();
 	}
-	ASSERT_APPROX_EQUAL(mean(finalprices), exp(bsm.riskFreeRate * 2.0) * bsm.stockPrice, 0.5);
+	ASSERT_APPROX_EQUAL(mean(finalPrices), exp(bsm.riskFreeRate * 2.0) * bsm.stockPrice, 0.5);
 }

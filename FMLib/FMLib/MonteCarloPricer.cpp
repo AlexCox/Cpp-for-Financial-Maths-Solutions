@@ -1,23 +1,28 @@
 #include "MonteCarloPricer.h"
 #include "matlib.h"
+#include "CallOption.h"
 
 MonteCarloPricer::MonteCarloPricer() :
-	nScenarios(10000) {
+	nScenarios(10000), nSteps(10) {
 }
 
 double MonteCarloPricer::price(
-	const CallOption& option, const BlackScholesModel& bsm) {
+	const ContinuousTimeOption& option,
+	const BlackScholesModel& model) {
+	int nSteps = this->nSteps;
+	if (!option.isPathDependent()) {
+		nSteps = 1;
+	}
 	double total = 0.0;
 	for (int i = 0; i < nScenarios; i++) {
-		std::vector<double> path = bsm.generateRiskNeutralPricePath(
-			option.maturity, 1);
-		double stockPrice = path.back();
-		double payoff = option.payoff(stockPrice);
+		std::vector<double> path = model.generateRiskNeutralPricePath(
+			option.getMaturity(), nSteps);
+		double payoff = option.payoff(path);
 		total += payoff;
 	}
 	double mean = total / nScenarios;
-	double r = bsm.riskFreeRate;
-	double T = option.maturity - bsm.date;
+	double r = model.riskFreeRate;
+	double T = option.getMaturity() - model.date;
 	return exp(-r * T) * mean;
 }
 
@@ -25,8 +30,8 @@ static void testPriceCallOption() {
 	rng("default");
 
 	CallOption c;
-	c.strike = 110;
-	c.maturity = 2;
+	c.setStrike(110);
+	c.setMaturity(2);
 
 	BlackScholesModel m;
 	m.volatility = 0.1;
@@ -39,4 +44,8 @@ static void testPriceCallOption() {
 	double price = pricer.price(c, m);
 	double expected = c.price(m);
 	ASSERT_APPROX_EQUAL(price, expected, 0.1);
+}
+
+void testMonteCarloPricer() {
+	TEST(testPriceCallOption);
 }

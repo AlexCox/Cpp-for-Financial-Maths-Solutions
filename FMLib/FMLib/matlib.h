@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "RealFunction.h"
 
 /*
 	Computes the cumulative distribution function of the normal distribution
@@ -30,6 +31,8 @@ std::vector<double> randuniform(int n);
 std::vector<double> randn(int n);
 std::vector<double> sort(const std::vector<double>& v);
 double prctile(const std::vector<double>& v, double percentage);
+
+double integral(RealFunction& f, double a, double b, int steps);
 
 /*
 	Testing normcdf and norminv functions
